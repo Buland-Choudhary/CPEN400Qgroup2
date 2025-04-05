@@ -4,6 +4,14 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
+# need to install these:
+# pip install qiskit
+# pip install pennylane-qiskit
+# pip install pennylane
+from qiskit import QuantumCircuit
+from qiskit.circuit.library import RealAmplitudes
+from qiskit.circuit import ParameterVector
+
 num_qubits = 7
 total_qubits = num_qubits + 2
 
@@ -12,8 +20,36 @@ dev = qml.device("default.qubit", wires=total_qubits)
 def amp_encode(data):
     qml.AmplitudeEmbedding(features=data, wires=range(num_qubits), normalize=True)
 
+# comment out the other not using ansatz. 
 def ansatz(params, wires):
+    # 1. PauliTwoDesign Pairwise CZ
     qml.StronglyEntanglingLayers(params, wires=wires)
+
+    # # 2. RealAmplitudes Circular
+    # ansatz2 = RealAmplitudes(num_qubits=num_qubits, reps=params.shape[0], entanglement="circular")
+    # qc = QuantumCircuit(num_qubits)
+    # qc.compose(ansatz2, inplace=True)
+    # pl_qfunc = qml.from_qiskit(qc)
+
+
+    # # 3. RealAmplitudes Full
+    # ansatz3 = RealAmplitudes(num_qubits=num_qubits, reps=params.shape[0], entanglement="full")
+    # qc = QuantumCircuit(num_qubits)
+    # qc.compose(ansatz3, inplace=True)
+    # pl_qfunc = qml.from_qiskit(qc)
+
+
+    # # 4. RealAmplitudes Linear
+    # ansatz4 = RealAmplitudes(num_qubits=num_qubits, reps=params.shape[0], entanglement="linear")
+    # qc = QuantumCircuit(num_qubits)
+    # qc.compose(ansatz4, inplace=True)
+    # pl_qfunc = qml.from_qiskit(qc)
+
+    # # 5. RealAmplitudes SCA
+    # ansatz5 = RealAmplitudes(num_qubits=num_qubits, reps=params.shape[0], entanglement="sca")
+    # qc = QuantumCircuit(num_qubits)
+    # qc.compose(ansatz5, inplace=True)
+    # pl_qfunc = qml.from_qiskit(qc)
 
 @qml.qnode(dev, interface="autograd", diff_method="backprop")
 def vqae_trainable(params, input_data):
