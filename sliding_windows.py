@@ -2,7 +2,6 @@ import pennylane as qml
 import numpy as np
 import os
 import matplotlib.pyplot as plt
-import numpy as np
 
 # need to install these:
 # pip install qiskit
@@ -18,6 +17,7 @@ total_qubits = num_qubits + 2
 dev = qml.device("default.qubit", wires=total_qubits)
 
 def amp_encode(data):
+    assert len(data) == 2 ** num_qubits, "Input data must be length 2**num_qubits"
     qml.AmplitudeEmbedding(features=data, wires=range(num_qubits), normalize=True)
 
 # comment out the other not using ansatz. 
@@ -63,7 +63,7 @@ def vqae_trainable(params, input_data):
     cswap_target1 = int(num_qubits)
     cswap_target2 = int(num_qubits - 2)
 
-    qml.SWAP(wires=[swap_wire1, swap_wire2])
+    #qml.SWAP(wires=[swap_wire1, swap_wire2])
     qml.Hadamard(wires=hadamard_wire)
     qml.CSWAP(wires=[cswap_control, cswap_target1, cswap_target2])
     qml.Hadamard(wires=hadamard_wire)
