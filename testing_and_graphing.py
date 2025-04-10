@@ -17,6 +17,7 @@ num_qubits = 7
 total_qubits = num_qubits + 2  # For swap test ancilla + extra wires
 shots = 5000
 reps = 2  # Number of ansatz layers
+USE_QISKIT_ANSATZ = True # True for RealAmplitudes, False for PauliTwoDesign
 
 # === Load Trained Parameters ===
 trained_params = np.load("trained_params.npy")
@@ -30,7 +31,15 @@ def amp_encode(data):
 
 # === Ansatz (PauliTwoDesign) ===
 def apply_ansatz(params):
-    qml.StronglyEntanglingLayers(params, wires=range(num_qubits))
+    if USE_QISKIT_ANSATZ:
+        reps = 2
+        real_amp = RealAmplitudes(num_qubits, reps=reps, entanglement=entanglement)
+        qc = QuantumCircuit(num_qubits)
+        qc.compose(real_amp, inplace=True)
+        qfunc = qml.from_qiskit(qc)
+        qfunc(params.flatten())
+    else:
+        qml.StronglyEntanglingLayers(params, wires=range(num_qubits))
 
 # === QNode: Reconstruction ===
 @qml.qnode(dev, interface="autograd", diff_method="parameter-shift")

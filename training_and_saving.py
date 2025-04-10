@@ -38,7 +38,12 @@ def apply_ansatz(params, entanglement=None):
 
 @qml.qnode(dev, interface="autograd", diff_method="parameter-shift")
 def reconstruct(params, input_data, entanglement=None):
-    amp_encode(input_data)
+    if USE_QISKIT_ANSATZ:
+        with qml.tape.QuantumTape() as tape:
+            amp_encode(input_data)
+    else:
+        amp_encode(input_data)
+
     apply_ansatz(params, entanglement)
     return qml.probs(wires=range(num_qubits))
 
@@ -71,7 +76,7 @@ def swap_loss(params, input_data, entanglement=None):
 def train(params, train_windows, entanglement=None, maxiter=45):
     def cost_fn(flat_params):
         reshaped_params = flat_params.reshape(params.shape)
-        return np.mean([reconstruction_loss(reshaped_params, window, entanglement) for window in train_windows])
+        return np.mean([swap_test(reshaped_params, window, entanglement) for window in train_windows])
     
     flat_params = params.flatten()
     result = minimize(cost_fn, flat_params, method='COBYLA', options={'maxiter': maxiter})
