@@ -5,6 +5,9 @@ Buland:
 Lucas: 
 
 Lisa: 
+- Participated in preprocessing, state preparation, and graphing in the software implementation.
+- Made general outline for slides and worked on background theory, autoencoding, postprocessing, and classification sections for the slides.
+- Wrote background theory, autoencoding, postprocessing, and classification sections of the report.
 
 Nayeon: 
   Participated in the implementation of training_and_saving.py. 
