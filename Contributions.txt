@@ -13,6 +13,6 @@ Lisa:
 - Wrote background theory, autoencoding, postprocessing, and classification sections of the report.
 
 Nayeon: 
-  Participated in the implementation of training_and_saving.py. 
-  Trained the Quantum Autoencoder model. 
-  Contributed to the writing of the companion report.
+ - Participated in the implementation of training_and_saving.py. 
+ - Trained the Quantum Autoencoder model. 
+ - Contributed to the writing of the companion report's ansatz and software results.
