@@ -1,6 +1,12 @@
 Group 2
 
 Buland: 
+
 Lucas: 
+
 Lisa: 
+
 Nayeon: 
+  Participated in the implementation of training_and_saving.py. 
+  Trained the Quantum Autoencoder model. 
+  Contributed to the writing of the companion report.
