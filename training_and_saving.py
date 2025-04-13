@@ -19,10 +19,11 @@ time_series = np.array(data)
 
 X = 2700  # Training cutoff can be differ based on dataset
 train_indices = list(range(1, X))
+# use window methodology for training
 train_windows = [time_series[i:i + 128] for i in train_indices if i + 128 <= len(time_series)]
 
 USE_QISKIT_ANSATZ = False  # Can change this boolian for runninf whether RealAmplitudes or PauliTwoDesign
-ANZ_ENTANGLE = ["circular", "full", "linear", "sca"] 
+ANZ_ENTANGLE = ["circular", "full", "linear", "sca"] # four entanglements for RealAmplitudes
 
 def amp_encode(data):
     qml.AmplitudeEmbedding(features=data, wires=range(num_qubits), normalize=True)
@@ -42,6 +43,8 @@ def apply_ansatz(params, entanglement=None):
 
 @qml.qnode(dev, interface="autograd", diff_method="parameter-shift")
 def reconstruct(params, input_data, entanglement=None):
+
+    # state preparation
     if USE_QISKIT_ANSATZ:
         with qml.tape.QuantumTape() as tape:
             amp_encode(input_data)
@@ -54,9 +57,11 @@ def reconstruct(params, input_data, entanglement=None):
 
 @qml.qnode(dev, interface="autograd", diff_method="parameter-shift")
 def swap_test(params, input_data, entanglement=None):
+    # state preparation
     amp_encode(input_data)
     apply_ansatz(params, entanglement)
 
+    # https://en.wikipedia.org/wiki/Swap_test
     h_wire = num_qubits + 1
     t1 = num_qubits
     t2 = num_qubits - 2

@@ -1,10 +1,14 @@
 # CPEN400Qgroup2
 
+# file explanation
+Contribution.txt: Which is explaining contributions of each group member to the project. 
+
 training_and_saving.py: This is the file where we can train the QAE with five ansatz and store the trained parameters.
 
 testing_and_graphing.py: This file displays the trained parameters in graph. 
 
 AnomalyDatasets_and_TrainedParams: In this folder, there are original datasets and trained parameters. For example, 028_UCR_Anomaly_DISTORTEDInternalBleeding17_1600_3198_3309.txt is the original dataset and its trained parameters are stored in these files:
+
 028_trained_params.npy (trained parameters for PauliTwoDesign)
 028_trained_params_circular.npy(trained parameters for RealAmplitudes circular entanglement)
 028_trained_params_full.npy(trained parameters for RealAmplitudes full entanglement)
@@ -19,7 +23,9 @@ pip install pennylane-qiskit
 pip install pennylane
 pip install scipy
 
-# Dataset's name:
+# Dataset explanation:
+These dataset is from the University of California at Riverside Time Series Anomaly Archive.
+
 028_UCR_Anomaly_DISTORTEDInternalBleeding17_1600_3198_3309.txt
 
 028: number of dataset
