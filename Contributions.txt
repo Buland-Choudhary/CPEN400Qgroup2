@@ -1,6 +1,9 @@
 Group 2
 
 Buland: 
+- Participated in the implementation of testing_and_graphing.py
+- Contributed to these Final Report sections: Reproducibility Issues, (parts of) Methodology.
+- Helped in understanding the preprocessing and state preparation parts of the paper.
 
 Lucas: 
 
