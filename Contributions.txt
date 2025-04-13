@@ -8,7 +8,7 @@ Buland:
 Lucas: 
 - Created initial interations of training_and_saving.py
 - Studied and organized data sets and selection
-- Constructed outline and intial iteration of state prep/autoencoding. Wrote section on the validity of the paper.
+- Paper - Constructed outline and intial iteration of state prep/autoencoding & Wrote section on the validity of the paper.
 
 Lisa: 
 - Participated in preprocessing, state preparation, and graphing in the software implementation.
