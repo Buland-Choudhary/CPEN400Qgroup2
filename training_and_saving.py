@@ -11,6 +11,8 @@ shots = 5000
 
 dev = qml.device("default.qubit", wires=total_qubits, shots=shots)
 
+# For example, if the filepath = 054_UCR_Anomaly_DISTORTEDWalkingAceleration5_2700_5920_5979
+# 054_UCR_Anomaly_DISTORTEDWalkingAceleration5_(training from 1 to2700)_(anomaly begins at 5920)_(anamaly ends at 5979)
 filepath = "data_set_file.txt"
 data = np.loadtxt(filepath)
 time_series = np.array(data)
@@ -26,6 +28,7 @@ def amp_encode(data):
     qml.AmplitudeEmbedding(features=data, wires=range(num_qubits), normalize=True)
 
 def apply_ansatz(params, entanglement=None):
+    # https://discuss.pennylane.ai/t/using-qiskit-feature-map-in-pennylane/1216/12
     if USE_QISKIT_ANSATZ:
         reps = 2  
         real_amp = RealAmplitudes(num_qubits, reps=reps, entanglement=entanglement)
@@ -34,6 +37,7 @@ def apply_ansatz(params, entanglement=None):
         qfunc = qml.from_qiskit(qc)
         qfunc(params.flatten())  
     else:
+        # https://docs.pennylane.ai/en/stable/code/api/pennylane.StronglyEntanglingLayers.html
         qml.StronglyEntanglingLayers(params, wires=range(num_qubits))
 
 @qml.qnode(dev, interface="autograd", diff_method="parameter-shift")
@@ -76,9 +80,13 @@ def swap_loss(params, input_data, entanglement=None):
 def train(params, train_windows, entanglement=None, maxiter=45):
     def cost_fn(flat_params):
         reshaped_params = flat_params.reshape(params.shape)
+
+        # training based on swap-test or MSE based detection. 
+        # need to use reconstruction_loss or swap_loss as its purpose.
         return np.mean([swap_test(reshaped_params, window, entanglement) for window in train_windows])
     
     flat_params = params.flatten()
+    # https://docs.scipy.org/doc/scipy/reference/optimize.minimize-cobyla.html
     result = minimize(cost_fn, flat_params, method='COBYLA', options={'maxiter': maxiter})
     return result.x.reshape(params.shape)
 
